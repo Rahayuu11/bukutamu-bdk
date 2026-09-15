@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Buku Tamu Digital - Balai Diklat Keagamaan Surabaya</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        kemenag: {
+                            green: '#004d25',
+                            mid: '#136c38',
+                            mint: '#dcecdb',
+                            mintsoft: '#f3f8f3',
+                            gold: '#f5a623',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        html,
+        body,
+        button,
+        input,
+        textarea,
+        select {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            50% { width: 75%; }
+            100% { width: 100%; }
+        }
+
+        .animate-progress {
+            animation: loadingProgress 1.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 4px;
+            height: 0.95em;
+            margin-left: 6px;
+            vertical-align: -0.08em;
+            background: #fbbf24;
+            border-radius: 999px;
+            animation: cursorBlink 0.8s steps(1) infinite;
+        }
+
+        @keyframes cursorBlink {
+            0%, 48% { opacity: 1; }
+            49%, 100% { opacity: 0; }
+        }
+
+        #beranda video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* JARAK JUDUL TYPEWRITER */
+        .typewriter-line {
+            display: block;
+            min-height: 1.05em;
+        }
+
+        .typewriter-line + .typewriter-line {
+            margin-top: 0.15rem;
+        }
+    </style>
+</head>
+
+<body class="bg-kemenag-mintsoft text-slate-800 antialiased relative font-poppins">
+
+    <!-- SPLASH SCREEN -->
+    <div
+        id="splashScreen"
+        class="fixed inset-0 z-[100]
+               bg-gradient-to-br
+               from-[#003319]
+               via-[#004d25]
+               to-[#001f0f]
+               flex flex-col
+               items-center
+               justify-center
+               p-6
+               text-white
+               transition-opacity
+               duration-500"
+    >
+
+        <div class="w-full max-w-sm text-center space-y-6">
+
+            <div>
+                <img
+                    src="assets/logo-kemenag.png"
+                    alt="Logo Kemenag"
+                    class="w-20 h-20 sm:w-28 sm:h-28 object-contain mx-auto"
+                >
+            </div>
+
+            <div class="space-y-1">
+
+                <h1 class="text-lg sm:text-2xl font-extrabold">
+                    Buku Tamu Digital
+                </h1>
+
+                <p class="text-[11px] sm:text-xs text-emerald-200/80">
+                    Balai Pendidikan dan Pelatihan Keagamaan Surabaya
+                </p>
+
+            </div>
+
+            <div class="w-full max-w-xs mx-auto space-y-2">
+
+                <div class="w-full bg-emerald-950/80 rounded-full h-2 overflow-hidden p-0.5">
+
+                    <div
+                        class="bg-emerald-400
+                               h-full
+                               rounded-full
+                               animate-progress">
+                    </div>
+
+                </div>
+
+                <p class="text-[10px] text-emerald-300">
+                    Memuat portal kunjungan...
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- MAIN -->
+    <div id="mainContent" class="hidden">
+
+
+        <!-- NAVBAR -->
+        <header
+            class="sticky top-0 z-50
+                   bg-white/95
+                   backdrop-blur-md
+                   border-b
+                   border-slate-200
+                   shadow-sm"
+        >
+
+            <div
+                class="max-w-7xl mx-auto
+                       px-4 sm:px-6 lg:px-8
+                       h-16 sm:h-20
+                       flex items-center
+                       justify-between"
+            >
+
+                <a
+                    href="#beranda"
+                    class="flex items-center
+                           space-x-3"
+                >
+
+                    <img
+                        src="assets/logo-kemenag.png"
+                        alt="Logo Kemenag"
+                        class="w-9 h-9 sm:w-11 sm:h-11 object-contain"
+                    >
+
+                    <div class="leading-tight">
+
+                        <h1
+                            class="text-xs sm:text-sm
+                                   font-extrabold
+                                   uppercase
+                                   text-kemenag-green"
+                        >
+                            KEMENTERIAN AGAMA RI
+                        </h1>
+
+                        <p
+                            class="text-[10px] sm:text-xs
+                                   font-bold
+                                   text-slate-800"
+                        >
+                            BALAI DIKLAT KEAGAMAAN SURABAYA
+                        </p>
+
+                    </div>
+
+                </a>
+
+
+                <div class="flex items-center space-x-6">
+
+                    <nav
+                        class="hidden lg:flex
+                               items-center
+                               space-x-6
+                               text-xs
+                               font-bold
+                               text-slate-700"
+                    >
+
+                        <a
+                            href="#beranda"
+                            class="text-kemenag-green"
+                        >
+                            Home
+                        </a>
+
+                        <a
+                            href="#alur"
+                            class="hover:text-kemenag-green"
+                        >
+                            Alur Kunjungan
+                        </a>
+
+                        <a
+                            href="#registrasi"
+                            class="hover:text-kemenag-green"
+                        >
+                            Buku Tamu
+                        </a>
+
+                    </nav>
+
+
+                    <a
+                        href="login.html"
+                        class="bg-kemenag-green
+                               hover:bg-[#003a1c]
+                               text-amber-300
+                               font-bold
+                               px-4 py-2.5
+                               rounded-lg
+                               text-xs
+                               shadow-md
+                               flex items-center
+                               space-x-2"
+                    >
+
+                        <i class="fa-solid fa-user-lock"></i>
+
+                        <span>
+                            Akses Petugas
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- HERO -->
+        <section
+        id="beranda"
+        class="relative
+            min-h-[540px]
+            sm:min-h-[570px]
+            lg:min-h-[590px]
+            flex
+            items-center
+            overflow-hidden
+            text-white"
+    >
+
+            <!-- VIDEO -->
+            <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                poster="assets/gedung bdk sby.png"
+                class="absolute inset-0
+                       w-full h-full
+                       object-cover
+                       object-center"
+            >
+
+                <source
+                    src="assets/hero-bdk.mp4"
+                    type="video/mp4"
+                >
+
+            </video>
+
+
+            <!-- OVERLAY TRANSPARAN TIPIS -->
+            <div
+                class="absolute inset-0
+                       bg-black/15">
+            </div>
+
+
+            <!-- GRADIENT TIPIS -->
+            <div
+                class="absolute inset-0
+                       bg-gradient-to-t
+                       from-black/20
+                       via-transparent
+                       to-black/5">
+            </div>
+
+
+            <!-- HERO CONTENT -->
+            <div
+                class="relative z-10
+                       max-w-7xl
+                       mx-auto
+                       w-full
+                       px-6 sm:px-8 lg:px-12
+                       pt-20 sm:pt-20 lg:pt-20
+                       pb-8 sm:pb-10 lg:pb-10
+            >
+
+                <div class="max-w-5xl -translate-y-16 sm:-translate-y-20 lg:-translate-y-12">
+
+
+                    <!-- LABEL -->
+                    <div class="mb-7">
+
+                        <span
+                            class="inline-flex
+                                   items-center
+                                   bg-black/20
+                                   backdrop-blur-sm
+                                   border
+                                   border-white/25
+                                   text-amber-300
+                                   px-4 py-2
+                                   rounded-lg
+                                   text-[11px] sm:text-xs
+                                   font-bold
+                                   uppercase
+                                   tracking-wider"
+                        >
+
+                            Sistem Layanan Registrasi Kunjungan
+
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- TITLE TYPEWRITER 2 BARIS -->
+                    <h1
+                        id="heroTypewriter"
+                        class="text-3xl
+                               sm:text-4xl
+                               lg:text-5xl
+                               font-extrabold
+                               leading-[1.1]
+                               tracking-tight
+                               text-white
+                               max-w-5xl
+                               min-h-[115px]
+                               sm:min-h-[130px]
+                               lg:min-h-[145px]
+                               drop-shadow-[0_5px_18px_rgba(0,0,0,0.55)]"
+                    >
+
+                        <!-- BARIS 1 -->
+                        <span class="typewriter-line">
+                            <span id="typingPart1"></span>
+
+                            <span
+                                id="typingPart2"
+                                class="text-amber-300 ml-2"
+                            ></span>
+                        </span>
+
+                        <!-- BARIS 2 -->
+                        <span class="typewriter-line">
+                            <span id="typingPart3"></span>
+
+                            <span
+                                class="typewriter-cursor"
+                                aria-hidden="true"
+                            ></span>
+                        </span>
+
+                    </h1>
+
+
+                    <!-- DESCRIPTION -->
+                    <p
+                        class="mt-4
+                               max-w-[860px]
+                               text-sm
+                               sm:text-base
+                               lg:text-lg
+                               leading-relaxed
+                               text-white
+                               drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]"
+                    >
+
+                        Buku Tamu Digital BDK Surabaya hadir untuk memberikan proses registrasi kunjungan yang lebih cepat, praktis, dan terorganisir. Data tamu dapat dicatat secara digital sehingga memudahkan proses administrasi, pencarian data, serta pemantauan kunjungan secara lebih efisien.
+
+                    </p>
+
+
+
+                    <!-- BUTTON -->
+                    <div class="mt-8">
+
+                        <a
+                            href="#registrasi"
+                            class="inline-flex
+                                   items-center
+                                   gap-3
+                                   bg-white/95
+                                   hover:bg-amber-300
+                                   text-kemenag-green
+                                   px-7 py-4
+                                   rounded-xl
+                                   font-extrabold
+                                   text-sm
+                                   sm:text-base
+                                   shadow-xl
+                                   transition-all
+                                   duration-300
+                                   hover:-translate-y-1"
+                        >
+
+                            <span>
+                                Isi Buku Tamu Sekarang
+                            </span>
+
+                            <i
+                                class="fa-solid
+                                       fa-arrow-right">
+                            </i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ALUR -->
+        <section
+            id="alur"
+            class="py-12
+                   sm:py-16
+                   bg-white
+                   border-y
+                   border-slate-200
+                   px-4
+                   sm:px-6
+                   lg:px-8"
+        >
+
+            <div
+                class="max-w-7xl
+                       mx-auto
+                       space-y-7"
+            >
+
+                <div>
+
+                    <p
+                        class="text-xs
+                               font-bold
+                               tracking-[0.18em]
+                               uppercase
+                               text-amber-500
+                               mb-2"
+                    >
+                        Panduan Pengunjung
+                    </p>
+
+                    <h2
+                        class="text-2xl
+                               sm:text-3xl
+                               font-extrabold
+                               text-kemenag-green"
+                    >
+                        Tata Cara & Alur Kunjungan
+                    </h2>
+
+                </div>
+
+
+
+                <div
+                    class="bg-kemenag-mint
+                           rounded-2xl
+                           p-4
+                           sm:p-6
+                           border
+                           border-emerald-200
+                           grid
+                           grid-cols-1
+                           md:grid-cols-3
+                           gap-4
+                           sm:gap-6"
+                >
+
+
+                    <div
+                        class="bg-white
+                               p-5
+                               rounded-xl
+                               border
+                               border-emerald-100
+                               shadow-sm
+                               space-y-3"
+                    >
+
+                        <div
+                            class="flex
+                                   items-center
+                                   space-x-3"
+                        >
+
+                            <span
+                                class="w-9 h-9
+                                       bg-kemenag-green
+                                       text-amber-300
+                                       font-extrabold
+                                       rounded-lg
+                                       flex
+                                       items-center
+                                       justify-center"
+                            >
+                                1
+                            </span>
+
+                            <h4
+                                class="font-bold
+                                       text-kemenag-green
+                                       text-sm"
+                            >
+                                Registrasi Online
+                            </h4>
+
+                        </div>
+
+                        <p
+                            class="text-xs
+                                   text-slate-600
+                                   leading-relaxed"
+                        >
+                            Isi data diri dan maksud kunjungan
+                            Anda secara mandiri pada formulir di bawah.
+                        </p>
+
+                    </div>
+
+
+
+                    <div
+                        class="bg-white
+                               p-5
+                               rounded-xl
+                               border
+                               border-emerald-100
+                               shadow-sm
+                               space-y-3"
+                    >
+
+                        <div
+                            class="flex
+                                   items-center
+                                   space-x-3"
+                        >
+
+                            <span
+                                class="w-9 h-9
+                                       bg-kemenag-green
+                                       text-amber-300
+                                       font-extrabold
+                                       rounded-lg
+                                       flex
+                                       items-center
+                                       justify-center"
+                            >
+                                2
+                            </span>
+
+                            <h4
+                                class="font-bold
+                                       text-kemenag-green
+                                       text-sm"
+                            >
+                                Verifikasi Resepsionis
+                            </h4>
+
+                        </div>
+
+                        <p
+                            class="text-xs
+                                   text-slate-600
+                                   leading-relaxed"
+                        >
+                            Sebutkan nama Anda kepada petugas
+                            di meja depan untuk verifikasi tujuan.
+                        </p>
+
+                    </div>
+
+
+
+                    <div
+                        class="bg-white
+                               p-5
+                               rounded-xl
+                               border
+                               border-emerald-100
+                               shadow-sm
+                               space-y-3"
+                    >
+
+                        <div
+                            class="flex
+                                   items-center
+                                   space-x-3"
+                        >
+
+                            <span
+                                class="w-9 h-9
+                                       bg-kemenag-green
+                                       text-amber-300
+                                       font-extrabold
+                                       rounded-lg
+                                       flex
+                                       items-center
+                                       justify-center"
+                            >
+                                3
+                            </span>
+
+                            <h4
+                                class="font-bold
+                                       text-kemenag-green
+                                       text-sm"
+                            >
+                                Pertemuan / Agenda
+                            </h4>
+
+                        </div>
+
+                        <p
+                            class="text-xs
+                                   text-slate-600
+                                   leading-relaxed"
+                        >
+                            Menuju lokasi pertemuan dengan pegawai
+                            atau pejabat BDK yang dituju.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FORM REGISTRASI -->
+        <section
+            id="registrasi"
+            class="py-12
+                   sm:py-20
+                   px-4
+                   sm:px-6
+                   lg:px-8"
+        >
+
+            <div
+                class="max-w-3xl
+                       mx-auto"
+            >
+
+                <div
+                    class="bg-white
+                           rounded-2xl
+                           border
+                           border-emerald-200
+                           shadow-xl
+                           p-5
+                           sm:p-10
+                           space-y-6
+                           border-t-8
+                           border-kemenag-green"
+                >
+
+
+                    <div
+                        class="border-b
+                               border-slate-200
+                               pb-4"
+                    >
+
+                        <div
+                            class="flex
+                                   items-center
+                                   space-x-2
+                                   text-kemenag-green
+                                   font-bold
+                                   text-xs
+                                   uppercase"
+                        >
+
+                            <i
+                                class="fa-solid
+                                       fa-address-book
+                                       text-amber-500">
+                            </i>
+
+                            <span>
+                                Registrasi Mandiri Tamu
+                            </span>
+
+                        </div>
+
+
+                        <h3
+                            class="text-lg
+                                   sm:text-2xl
+                                   font-extrabold
+                                   text-slate-900
+                                   mt-1"
+                        >
+                            Formulir Kunjungan Tamu
+                        </h3>
+
+                        <p
+                            class="text-xs
+                                   text-slate-500
+                                   mt-1"
+                        >
+                            Harap isi data kunjungan Anda
+                            secara teliti dan lengkap.
+                        </p>
+
+                    </div>
+
+
+
+                    <form
+                        id="publicCheckinForm"
+                        class="space-y-4"
+                    >
+
+
+                        <div>
+
+                            <label
+                                class="block
+                                       text-xs
+                                       font-bold
+                                       text-slate-700
+                                       uppercase
+                                       mb-1.5"
+                            >
+                                Nama Lengkap *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="userNama"
+                                required
+                                placeholder="Sebutkan nama lengkap Anda"
+                                class="w-full
+                                       p-3
+                                       bg-kemenag-mintsoft
+                                       border
+                                       border-slate-300
+                                       rounded-lg
+                                       text-sm
+                                       focus:bg-white
+                                       focus:border-kemenag-green
+                                       outline-none"
+                            >
+
+                        </div>
+
+
+
+                        <div
+                            class="grid
+                                   grid-cols-1
+                                   sm:grid-cols-2
+                                   gap-4"
+                        >
+
+
+                            <div>
+
+                                <label
+                                    class="block
+                                           text-xs
+                                           font-bold
+                                           text-slate-700
+                                           uppercase
+                                           mb-1.5"
+                                >
+                                    No. HP / WhatsApp *
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="userHp"
+                                    required
+                                    placeholder="Contoh: 081234567890"
+                                    class="w-full
+                                           p-3
+                                           bg-kemenag-mintsoft
+                                           border
+                                           border-slate-300
+                                           rounded-lg
+                                           text-sm
+                                           focus:bg-white
+                                           focus:border-kemenag-green
+                                           outline-none"
+                                >
+
+                            </div>
+
+
+
+                            <div>
+
+                                <label
+                                    class="block
+                                           text-xs
+                                           font-bold
+                                           text-slate-700
+                                           uppercase
+                                           mb-1.5"
+                                >
+                                    Jabatan / Posisi *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="userJabatan"
+                                    required
+                                    placeholder="Contoh: Staf / Guru / Dosen"
+                                    class="w-full
+                                           p-3
+                                           bg-kemenag-mintsoft
+                                           border
+                                           border-slate-300
+                                           rounded-lg
+                                           text-sm
+                                           focus:bg-white
+                                           focus:border-kemenag-green
+                                           outline-none"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div
+                            class="grid
+                                   grid-cols-1
+                                   sm:grid-cols-2
+                                   gap-4"
+                        >
+
+
+                            <div>
+
+                                <label
+                                    class="block
+                                           text-xs
+                                           font-bold
+                                           text-slate-700
+                                           uppercase
+                                           mb-1.5"
+                                >
+                                    Asal Instansi *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="userInstansi"
+                                    required
+                                    placeholder="Contoh: Kanwil Kemenag / UNESA"
+                                    class="w-full
+                                           p-3
+                                           bg-kemenag-mintsoft
+                                           border
+                                           border-slate-300
+                                           rounded-lg
+                                           text-sm
+                                           focus:bg-white
+                                           focus:border-kemenag-green
+                                           outline-none"
+                                >
+
+                            </div>
+
+
+
+                            <div>
+
+                                <label
+                                    class="block
+                                           text-xs
+                                           font-bold
+                                           text-slate-700
+                                           uppercase
+                                           mb-1.5"
+                                >
+                                    Pegawai Yang Dituju *
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="userPejabat"
+                                    required
+                                    placeholder="Contoh: Kepala BDK / Subag TU"
+                                    class="w-full
+                                           p-3
+                                           bg-kemenag-mintsoft
+                                           border
+                                           border-slate-300
+                                           rounded-lg
+                                           text-sm
+                                           focus:bg-white
+                                           focus:border-kemenag-green
+                                           outline-none"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div>
+
+                            <label
+                                class="block
+                                       text-xs
+                                       font-bold
+                                       text-slate-700
+                                       uppercase
+                                       mb-1.5"
+                            >
+                                Keperluan Kunjungan *
+                            </label>
+
+                            <textarea
+                                id="userKeperluan"
+                                required
+                                rows="4"
+                                placeholder="Tuliskan maksud kunjungan Anda secara singkat..."
+                                class="w-full
+                                       p-3
+                                       bg-kemenag-mintsoft
+                                       border
+                                       border-slate-300
+                                       rounded-lg
+                                       text-sm
+                                       focus:bg-white
+                                       focus:border-kemenag-green
+                                       outline-none
+                                       resize-none"
+                            ></textarea>
+
+                        </div>
+
+
+
+                        <button
+                            type="submit"
+                            class="w-full
+                                   bg-kemenag-green
+                                   hover:bg-[#00381b]
+                                   text-amber-300
+                                   font-extrabold
+                                   py-3.5
+                                   rounded-lg
+                                   shadow-md
+                                   transition
+                                   text-sm
+                                   flex
+                                   items-center
+                                   justify-center
+                                   space-x-2"
+                        >
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            <span>
+                                Kirim Data Registrasi Kunjungan
+                            </span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FOOTER -->
+        <footer
+            class="bg-kemenag-mint
+                   text-slate-800
+                   pt-10
+                   pb-6
+                   border-t
+                   border-emerald-200
+                   px-4
+                   sm:px-6
+                   lg:px-8"
+        >
+
+            <div
+                class="max-w-7xl
+                       mx-auto
+                       grid
+                       grid-cols-1
+                       md:grid-cols-2
+                       gap-8
+                       pb-8
+                       border-b
+                       border-emerald-300"
+            >
+
+
+                <div class="space-y-4">
+
+                    <div
+                        class="flex
+                               items-center
+                               space-x-3"
+                    >
+
+                        <img
+                            src="assets/logo-kemenag.png"
+                            alt="Logo Kemenag"
+                            class="w-12 h-12 object-contain"
+                        >
+
+                        <div>
+
+                            <h2
+                                class="text-sm
+                                       font-extrabold
+                                       text-kemenag-green
+                                       uppercase"
+                            >
+                                Kementerian Agama RI
+                            </h2>
+
+                            <p
+                                class="text-xs
+                                       font-bold"
+                            >
+                                Balai Diklat Keagamaan Surabaya
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <p
+                        class="text-xs
+                               text-slate-700
+                               leading-relaxed
+                               max-w-md"
+                    >
+                        Membina dan mengembangkan kompetensi
+                        seluruh aparatur Kementerian Agama di Jawa Timur
+                        melalui pelatihan dan penguatan nilai moderasi beragama.
+                    </p>
+        <!-- MEDIA SOSIAL BDK -->
+        <div>
+
+            <p class="text-xs font-bold text-kemenag-green mb-3">
+                Media Sosial BDK
+            </p>
+
+            <div class="flex items-center gap-2">
+
+                <!-- WEB -->
+                <a
+                    href="https://bdksurabaya-kemenag.id/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Website BDK Surabaya"
+                    class="w-9 h-9 rounded-full
+                        bg-kemenag-green
+                        text-white
+                        flex items-center justify-center
+                        hover:bg-kemenag-mid
+                        transition"
+                >
+                    <i class="fa-solid fa-globe text-sm"></i>
+                </a>
+
+                <!-- FACEBOOK -->
+                <a
+                    href="https://www.facebook.com/?locale=id_ID"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Facebook BDK Surabaya"
+                    class="w-9 h-9 rounded-full
+                        bg-kemenag-green
+                        text-white
+                        flex items-center justify-center
+                        hover:bg-kemenag-mid
+                        transition"
+                >
+                    <i class="fa-brands fa-facebook-f text-sm"></i>
+                </a>
+
+                <!-- INSTAGRAM -->
+                <a
+                    href="https://instagram.com/BDKSurabaya"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Instagram BDK Surabaya"
+                    class="w-9 h-9 rounded-full
+                        bg-kemenag-green
+                        text-white
+                        flex items-center justify-center
+                        hover:bg-kemenag-mid
+                        transition"
+                >
+                    <i class="fa-brands fa-instagram text-sm"></i>
+                </a>
+
+                <!-- YOUTUBE -->
+                <a
+                    href="https://youtube.com/@BDKSurabaya"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="YouTube BDK Surabaya"
+                    class="w-9 h-9 rounded-full
+                        bg-kemenag-green
+                        text-white
+                        flex items-center justify-center
+                        hover:bg-kemenag-mid
+                        transition"
+                >
+                    <i class="fa-brands fa-youtube text-sm"></i>
+                </a>
+
+                <!-- TIKTOK -->
+                <a
+                    href="https://tiktok.com/@bdk_surabaya"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="TikTok BDK Surabaya"
+                    class="w-9 h-9 rounded-full
+                        bg-kemenag-green
+                        text-white
+                        flex items-center justify-center
+                        hover:bg-kemenag-mid
+                        transition"
+                >
+                    <i class="fa-brands fa-tiktok text-sm"></i>
+                </a>
+
+            </div>
+
+</div>
+                </div>
+
+
+
+                <div class="space-y-4 md:pl-8">
+
+                    <h3
+                        class="text-sm
+                               font-bold
+                               text-kemenag-green"
+                    >
+                        Hubungi Kami
+                    </h3>
+
+
+
+                    <div class="space-y-3 text-xs">
+
+
+                        <div
+                            class="flex
+                                   items-center
+                                   space-x-3"
+                        >
+
+                            <i
+                                class="fa-solid
+                                       fa-envelope
+                                       text-kemenag-green">
+                            </i>
+
+                            <span>
+                                bdk_surabaya@kemenag.go.id
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="flex
+                                   items-center
+                                   space-x-3"
+                        >
+
+                            <i
+                                class="fa-solid
+                                       fa-phone
+                                       text-kemenag-green">
+                            </i>
+
+                            <span>
+                                0816569292
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="flex
+                                   items-start
+                                   space-x-3"
+                        >
+
+                            <i
+                                class="fa-solid
+                                       fa-location-dot
+                                       text-kemenag-green
+                                       mt-1">
+                            </i>
+
+                            <span>
+                                Jl. Ketintang Madya No.92, Karah, Kec. Jambangan, Surabaya, Jawa Timur 60232
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="max-w-7xl
+                       mx-auto
+                       pt-5
+                       text-center
+                       text-xs
+                       text-slate-600"
+            >
+                Copyright © 2026 |
+                Buku Tamu Digital Balai Diklat Keagamaan Surabaya
+            </div>
+
+        </footer>
+
+
+    </div>
+
+
+
+    <!-- JAVASCRIPT -->
+    <script>
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            () => {
+
+                /* SPLASH SCREEN */
+                setTimeout(() => {
+
+                    const splash =
+                        document.getElementById('splashScreen');
+
+                    const main =
+                        document.getElementById('mainContent');
+
+
+                    if (splash) {
+                        splash.classList.add('opacity-0');
+                    }
+
+
+                    setTimeout(() => {
+
+                        if (splash) {
+                            splash.classList.add('hidden');
+                        }
+
+                        if (main) {
+                            main.classList.remove('hidden');
+                        }
+
+                    }, 500);
+
+                }, 1400);
+
+
+
+                /* FORM BUKU TAMU */
+                const form =
+                    document.getElementById(
+                        'publicCheckinForm'
+                    );
+
+
+                if (form) {
+
+                    form.addEventListener(
+                        'submit',
+                        function(e) {
+
+                            e.preventDefault();
+
+
+                            const now = new Date();
+
+
+                            const formattedDate =
+
+                                `${now.getDate()
+                                    .toString()
+                                    .padStart(2,'0')}/`
+
+                                +
+
+                                `${(now.getMonth()+1)
+                                    .toString()
+                                    .padStart(2,'0')}/`
+
+                                +
+
+                                `${now.getFullYear()} `
+
+                                +
+
+                                `${now.getHours()
+                                    .toString()
+                                    .padStart(2,'0')}:`
+
+                                +
+
+                                `${now.getMinutes()
+                                    .toString()
+                                    .padStart(2,'0')}`;
+
+
+
+                            const newGuest = {
+
+                                id: Date.now(),
+
+                                tanggal:
+                                    formattedDate,
+
+                                nama:
+                                    document
+                                    .getElementById('userNama')
+                                    .value.trim(),
+
+                                hp:
+                                    document
+                                    .getElementById('userHp')
+                                    .value.trim(),
+
+                                jabatan:
+                                    document
+                                    .getElementById('userJabatan')
+                                    .value.trim(),
+
+                                instansi:
+                                    document
+                                    .getElementById('userInstansi')
+                                    .value.trim(),
+
+                                pejabat:
+                                    document
+                                    .getElementById('userPejabat')
+                                    .value.trim(),
+
+                                keperluan:
+                                    document
+                                    .getElementById('userKeperluan')
+                                    .value.trim(),
+
+                                status:
+                                    'Active'
+
+                            };
+
+
+                            let dataTamu = [];
+
+
+                            try {
+
+                                dataTamu =
+                                    JSON.parse(
+                                        localStorage.getItem(
+                                            'bdk_tamu_list'
+                                        )
+                                    ) || [];
+
+                            }
+
+                            catch(error) {
+
+                                dataTamu = [];
+
+                            }
+
+
+                            dataTamu.unshift(
+                                newGuest
+                            );
+
+
+                            localStorage.setItem(
+
+                                'bdk_tamu_list',
+
+                                JSON.stringify(
+                                    dataTamu
+                                )
+
+                            );
+
+
+                            alert(
+                                'Pendaftaran kunjungan Anda berhasil dicatat! Silakan konfirmasi di meja resepsionis.'
+                            );
+
+
+                            this.reset();
+
+                        }
+                    );
+
+                }
+
+
+
+                /* TYPEWRITER */
+                const parts = [
+
+                    {
+                        id: 'typingPart1',
+                        text: 'Selamat Datang!'
+                    },
+
+                    {
+                        id: 'typingPart2',
+                        text: 'Buku Tamu Digital'
+                    },
+
+                    {
+                        id: 'typingPart3',
+                        text: 'Balai Diklat Keagamaan Surabaya.'
+                    }
+
+                ];
+
+
+
+                const typeSpeed = 68;
+                const deleteSpeed = 32;
+                const pauseAfterTyping = 2200;
+                const pauseBeforeRetype = 500;
+
+
+
+                const sleep =
+                    (ms) =>
+
+                    new Promise(
+                        resolve =>
+
+                        setTimeout(
+                            resolve,
+                            ms
+                        )
+                    );
+
+
+
+                async function runTypewriter() {
+
+
+                    while(true) {
+
+
+                        for (
+                            const part
+                            of parts
+                        ) {
+
+
+                            const el =
+
+                                document
+                                .getElementById(
+                                    part.id
+                                );
+
+
+                            if (!el) {
+                                continue;
+                            }
+
+
+                            el.textContent = '';
+
+
+                            for (
+                                const char
+                                of part.text
+                            ) {
+
+                                el.textContent +=
+                                    char;
+
+                                await sleep(
+                                    typeSpeed
+                                );
+
+                            }
+
+                        }
+
+
+
+                        await sleep(
+                            pauseAfterTyping
+                        );
+
+
+
+                        for (
+
+                            let i =
+                            parts.length - 1;
+
+                            i >= 0;
+
+                            i--
+
+                        ) {
+
+
+                            const el =
+
+                                document
+                                .getElementById(
+                                    parts[i].id
+                                );
+
+
+                            while (
+                                el &&
+                                el.textContent.length > 0
+                            ) {
+
+
+                                el.textContent =
+
+                                    el
+                                    .textContent
+                                    .slice(
+                                        0,
+                                        -1
+                                    );
+
+
+                                await sleep(
+                                    deleteSpeed
+                                );
+
+                            }
+
+                        }
+
+
+                        await sleep(
+                            pauseBeforeRetype
+                        );
+
+                    }
+
+                }
+
+
+                runTypewriter();
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
