@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu Digital - BDK Surabaya</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SheetJS Library (Export Excel) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        html, body, button, input, textarea, select {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex h-screen overflow-hidden font-sans relative">
+
+    <!-- 1. OVERLAY BACKDROP BLUR (KHUSUS MOBILE SAAT MENU DIBUKA) -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 hidden transition-opacity duration-300 md:hidden"></div>
+
+    <!-- 2. SIDEBAR LEFT (DESKTOP: FIXED LEFT, MOBILE: SLIDE DRAWER) -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-emerald-950 text-white flex flex-col justify-between flex-shrink-0 border-r border-emerald-900 transform -translate-x-full md:translate-x-0 md:static md:z-auto transition-transform duration-300 ease-in-out">
+        <div>
+            <!-- Brand Logo Header & Close Button HP -->
+            <div class="p-4 border-b border-emerald-900/80 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="assets/logo-kemenag.png" alt="Logo Kemenag" class="w-9 h-9 object-contain" onerror="this.src='https://via.placeholder.com/40'">
+                    <div>
+                        <h1 class="text-sm font-bold tracking-wide uppercase text-white leading-tight">BDK Surabaya</h1>
+                        <p class="text-xs text-amber-400 font-medium">Buku Tamu Digital</p>
+                    </div>
+                </div>
+                <!-- Tombol Silang (Tutup Menu di HP) -->
+                <button id="closeSidebarBtn" class="md:hidden text-emerald-300 hover:text-white p-1 focus:outline-none">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="p-3 space-y-1.5 text-sm font-medium" id="sidebarMenu">
+                <button data-target="dashboard" class="nav-btn w-full flex items-center space-x-3 bg-emerald-800 text-amber-300 px-4 py-3 rounded-lg font-semibold text-left transition">
+                    <i class="fa-solid fa-chart-pie w-5 text-center text-base"></i>
+                    <span>Dashboard</span>
+                </button>
+
+                <button data-target="daftar-tamu" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-list-ul w-5 text-center text-base"></i>
+                    <span>Daftar Tamu</span>
+                </button>
+
+                <button data-target="checkin-tamu" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-circle-check w-5 text-center text-base"></i>
+                    <span>Check-in Tamu</span>
+                </button>
+
+                <button data-target="checkout-tamu" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center text-base"></i>
+                    <span>Check-out Tamu</span>
+                </button>
+
+                <button data-target="pencarian-tamu" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-magnifying-glass w-5 text-center text-base"></i>
+                    <span>Pencarian Tamu</span>
+                </button>
+
+                <button data-target="riwayat-tamu" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-clock-rotate-left w-5 text-center text-base"></i>
+                    <span>Riwayat Tamu</span>
+                </button>
+
+                <button data-target="laporan" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-chart-column w-5 text-center text-base"></i>
+                    <span>Laporan & Statistik</span>
+                </button>
+
+                <button data-target="pengaturan" class="nav-btn w-full flex items-center space-x-3 text-emerald-100 hover:bg-emerald-900/70 hover:text-white px-4 py-3 rounded-lg text-left transition">
+                    <i class="fa-solid fa-gear w-5 text-center text-base"></i>
+                    <span>Pengaturan</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Logout Button -->
+        <div class="p-3 border-t border-emerald-900">
+            <button id="logoutBtn" onclick="alert('Anda telah keluar dari sistem admin.')" class="w-full flex items-center space-x-2 text-sm text-amber-300 hover:text-white px-3 py-2.5 rounded-md hover:bg-emerald-900 transition font-medium">
+                <i class="fa-solid fa-power-off"></i>
+                <span>Keluar Akun</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- 3. MAIN CONTENT AREA -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        <!-- Header Top Bar -->
+        <header class="bg-white border-b border-gray-200 px-4 md:px-6 py-3.5 flex items-center justify-between flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                <!-- TOMBOL GARIS TIGA (HAMBURGER MENU) UNTUK HP -->
+                <button id="hamburgerBtn" class="md:hidden text-emerald-900 hover:bg-emerald-50 p-2 rounded-lg transition focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+
+                <span class="text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200 hidden sm:inline-block">
+                    Sistem Utama
+                </span>
+                <span class="text-sm text-gray-400 hidden sm:inline-block">/</span>
+                <span class="text-xs md:text-sm font-medium text-gray-700 truncate max-w-[180px] sm:max-w-none">
+                    BDK Surabaya
+                </span>
+            </div>
+
+            <div class="flex items-center space-x-3 md:space-x-4">
+                <div class="text-right">
+                    <p class="text-xs md:text-sm font-bold text-gray-800" id="welcomeUser">Admin Fathera</p>
+                    <p class="text-[10px] md:text-xs text-gray-500 hidden sm:block" id="currentDatetime">Waktu sistem: loading...</p>
+                </div>
+                <div class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-emerald-800 text-amber-300 flex items-center justify-center font-bold text-xs md:text-sm shadow-sm">
+                    FA
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable Content Section -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+
+            <!-- SECTION 1: DASHBOARD -->
+            <div id="section-dashboard" class="page-section space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Dashboard Utama</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Ringkasan statistik kunjungan tamu di BDK Surabaya hari ini.</p>
+                </div>
+
+                <!-- Metric Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+                    
+                    <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 flex flex-col justify-between shadow-sm">
+                        <span class="text-xs md:text-sm font-medium text-gray-600">Total Tamu Hari Ini</span>
+                        <div class="flex items-baseline justify-between my-2 md:my-3">
+                            <span class="text-3xl md:text-4xl font-bold text-gray-900" id="statTotalTamu">0</span>
+                            <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Live</span>
+                        </div>
+                        <span class="text-[11px] text-gray-500">Tercatat di sistem</span>
+                    </div>
+
+                    <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 shadow-sm">
+                        <span class="text-xs md:text-sm font-medium text-gray-600">Check-in Terbaru</span>
+                        <div class="space-y-2 mt-2 md:mt-3 text-xs md:text-sm" id="recentCheckinList">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 shadow-sm">
+                        <span class="text-xs md:text-sm font-medium text-gray-600">Check-out Terbaru</span>
+                        <div class="space-y-2 mt-2 md:mt-3 text-xs md:text-sm" id="recentCheckoutList">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 flex flex-col justify-between shadow-sm">
+                        <span class="text-xs md:text-sm font-medium text-gray-600">Tamu Aktif Di Gedung</span>
+                        <div class="my-2 md:my-3">
+                            <span class="text-3xl md:text-4xl font-bold text-amber-600" id="statActiveTamu">0</span>
+                            <span class="text-xs text-gray-600 ml-1">orang saat ini</span>
+                        </div>
+                        <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                            <div id="statProgressBar" class="bg-amber-500 h-full w-[0%] transition-all duration-500"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- DIAGRAM SECTION -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+                    <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 lg:col-span-2 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="text-sm md:text-base font-bold text-gray-800">Tren Kunjungan Tamu</h3>
+                                <p class="text-[11px] md:text-xs text-gray-500">Statistik kedatangan minggu ini</p>
+                            </div>
+                            <span class="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-1 rounded border border-emerald-200">
+                                Mingguan
+                            </span>
+                        </div>
+                        <div class="h-56 md:h-64 relative">
+                            <canvas id="chartKunjungan"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 shadow-sm">
+                        <div class="mb-4">
+                            <h3 class="text-sm md:text-base font-bold text-gray-800">Status Kunjungan Hari Ini</h3>
+                            <p class="text-[11px] md:text-xs text-gray-500">Persentase status kedatangan</p>
+                        </div>
+                        <div class="h-56 md:h-64 relative flex items-center justify-center">
+                            <canvas id="chartStatus"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="p-4 md:p-5 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <h3 class="text-sm md:text-base font-bold text-gray-800">Daftar Tamu Hari Ini</h3>
+                        <button onclick="exportToExcel()" class="w-full sm:w-auto bg-emerald-800 hover:bg-emerald-900 text-amber-300 text-xs md:text-sm font-semibold px-4 py-2.5 rounded shadow-sm flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span>Unduh Excel</span>
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm text-gray-700 whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-800 font-bold border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4">No</th>
+                                    <th class="py-3 px-4">Waktu Check-in</th>
+                                    <th class="py-3 px-4">Nama Tamu</th>
+                                    <th class="py-3 px-4">Jabatan</th>
+                                    <th class="py-3 px-4">Instansi</th>
+                                    <th class="py-3 px-4">No. HP</th>
+                                    <th class="py-3 px-4">Pegawai Tujuan</th>
+                                    <th class="py-3 px-4">Keperluan</th>
+                                    <th class="py-3 px-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboardTableBody" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: DAFTAR TAMU -->
+            <div id="section-daftar-tamu" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Daftar Semua Tamu</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Arsip lengkap seluruh data pengunjung BDK Surabaya.</p>
+                </div>
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm text-gray-700 whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-800 font-bold border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4">No</th>
+                                    <th class="py-3 px-4">Waktu Masuk</th>
+                                    <th class="py-3 px-4">Waktu Keluar</th>
+                                    <th class="py-3 px-4">Nama Tamu</th>
+                                    <th class="py-3 px-4">Instansi</th>
+                                    <th class="py-3 px-4">Tujuan</th>
+                                    <th class="py-3 px-4">Status</th>
+                                    <th class="py-3 px-4">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="allGuestsTableBody" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: CHECKIN TAMU -->
+            <div id="section-checkin-tamu" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Formulir Check-in Tamu</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Isi formulir untuk mencatat kedatangan tamu baru.</p>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-lg border border-gray-200 max-w-xl shadow-sm">
+                    <form id="checkinForm" class="space-y-4 text-xs md:text-sm">
+                        <div>
+                            <label class="block font-semibold text-gray-700 mb-1">Nama Lengkap</label>
+                            <input type="text" id="inputNama" required placeholder="Contoh: Fathera Ardila" class="w-full p-2.5 md:p-3 border border-gray-300 rounded focus:ring-1 focus:ring-emerald-700 focus:outline-none">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-semibold text-gray-700 mb-1">No. HP / WA</label>
+                                <input type="tel" id="inputHp" required placeholder="Contoh: 081234567890" class="w-full p-2.5 md:p-3 border border-gray-300 rounded focus:ring-1 focus:ring-emerald-700 focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-gray-700 mb-1">Jabatan / Posisi</label>
+                                <input type="text" id="inputJabatan" required placeholder="Contoh: Staf Analis" class="w-full p-2.5 md:p-3 border border-gray-300 rounded focus:ring-1 focus:ring-emerald-700 focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-gray-700 mb-1">Asal Instansi</label>
+                            <input type="text" id="inputInstansi" required placeholder="Contoh: Kanwil Kemenag Jatim" class="w-full p-2.5 md:p-3 border border-gray-300 rounded focus:ring-1 focus:ring-emerald-700 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-gray-700 mb-1">Pegawai Yang Dikunjungi</label>
+                            <input type="text" id="inputPejabat" required placeholder="Contoh: Head of IT / Subag TU" class="w-full p-2.5 md:p-3 border border-gray-300 rounded focus:ring-1 focus:ring-emerald-700 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-gray-700 mb-1">Keperluan Kunjungan</label>
+                            <textarea id="inputKeperluan" required rows="3" placeholder="Tuliskan tujuan kunjungan..." class="w-full p-2.5 md:p-3 border border-gray-300 rounded focus:ring-1 focus:ring-emerald-700 focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-bold py-3 rounded shadow-sm transition flex items-center justify-center space-x-2 text-xs md:text-sm">
+                            <i class="fa-solid fa-user-check"></i>
+                            <span>Proses Check-in Tamu</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- SECTION 4: CHECKOUT TAMU -->
+            <div id="section-checkout-tamu" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Check-out Tamu</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Daftar tamu yang saat ini masih berada di dalam gedung.</p>
+                </div>
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm text-gray-700 whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-800 font-bold border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4">No</th>
+                                    <th class="py-3 px-4">Waktu Check-in</th>
+                                    <th class="py-3 px-4">Nama Tamu</th>
+                                    <th class="py-3 px-4">Instansi</th>
+                                    <th class="py-3 px-4">Pegawai Tujuan</th>
+                                    <th class="py-3 px-4">Keperluan</th>
+                                    <th class="py-3 px-4">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="checkoutTableBody" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: PENCARIAN TAMU -->
+            <div id="section-pencarian-tamu" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Pencarian Data Tamu</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Cari data pengunjung berdasarkan nama, nomor HP, instansi, atau pegawai tujuan.</p>
+                </div>
+
+                <div class="bg-white p-4 md:p-5 rounded-lg border border-gray-200 max-w-2xl shadow-sm">
+                    <label class="block text-xs md:text-sm font-semibold text-gray-700 mb-2">Kata Kunci Pencarian</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
+                        <input type="text" id="searchGuestInput" placeholder="Ketik nama tamu, instansi, HP..." 
+                               class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded text-xs md:text-sm text-gray-800 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-700">
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="p-4 md:p-5 border-b border-gray-200">
+                        <h3 class="text-sm md:text-base font-bold text-gray-800">Hasil Filter Pencarian</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm text-gray-700 whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-800 font-bold border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4">No</th>
+                                    <th class="py-3 px-4">Tanggal / Waktu</th>
+                                    <th class="py-3 px-4">Nama Tamu</th>
+                                    <th class="py-3 px-4">Jabatan</th>
+                                    <th class="py-3 px-4">Instansi</th>
+                                    <th class="py-3 px-4">No. HP</th>
+                                    <th class="py-3 px-4">Pegawai Tujuan</th>
+                                    <th class="py-3 px-4">Keperluan</th>
+                                    <th class="py-3 px-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="searchResultsBody" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: RIWAYAT TAMU -->
+            <div id="section-riwayat-tamu" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Riwayat Kunjungan Selesai</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Daftar tamu yang telah menyelesaikan kunjungan (Check-out).</p>
+                </div>
+                <div class="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs md:text-sm text-gray-700 whitespace-nowrap">
+                            <thead class="bg-gray-50 text-gray-800 font-bold border-b border-gray-200">
+                                <tr>
+                                    <th class="py-3 px-4">No</th>
+                                    <th class="py-3 px-4">Waktu Masuk</th>
+                                    <th class="py-3 px-4">Waktu Selesai</th>
+                                    <th class="py-3 px-4">Nama Tamu</th>
+                                    <th class="py-3 px-4">Instansi</th>
+                                    <th class="py-3 px-4">Pegawai Tujuan</th>
+                                    <th class="py-3 px-4">Keperluan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="riwayatTableBody" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 7: LAPORAN -->
+            <div id="section-laporan" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Laporan & Statistik</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Unduh dan rekap data kunjungan tamu bulanan.</p>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-lg border border-gray-200 max-w-md space-y-4 shadow-sm">
+                    <h3 class="font-bold text-gray-800 text-sm md:text-base">Unduh Rekapitulasi</h3>
+                    <button onclick="exportToExcel()" class="w-full bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-bold py-3 rounded shadow-sm transition flex items-center justify-center space-x-2 text-xs md:text-sm">
+                        <i class="fa-solid fa-file-excel"></i>
+                        <span>Ekspor Seluruh Data Ke Excel</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- SECTION 8: PENGATURAN -->
+            <div id="section-pengaturan" class="page-section hidden space-y-6">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-900">Pengaturan Sistem</h2>
+                    <p class="text-xs md:text-sm text-gray-600 mt-0.5">Konfigurasi akun dan aplikasi.</p>
+                </div>
+                <div class="bg-white p-4 md:p-6 rounded-lg border border-gray-200 max-w-md space-y-4 text-xs md:text-sm shadow-sm">
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-1">Nama Petugas Admin</label>
+                        <input type="text" value="Fathera Ardila" class="w-full p-2.5 border border-gray-300 rounded bg-gray-50" readonly>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-gray-700 mb-1">Instansi</label>
+                        <input type="text" value="BDK Surabaya" class="w-full p-2.5 border border-gray-300 rounded bg-gray-50" readonly>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer Bottom -->
+        <footer class="bg-white border-t border-gray-200 py-3 px-4 md:px-6 text-center text-[11px] md:text-xs text-gray-500 flex-shrink-0">
+            Balai Pendidikan dan Pelatihan Keagamaan Surabaya — <span class="font-semibold text-emerald-800">Fathera Ardila (2026)</span>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT UTAMA SISTEM -->
+    <script>
+        // DATA STATE
+        let guestData = [
+            { id: 1, datetime: '2026-09-10 08:30', nama: 'Budi Santoso', hp: '081234567890', jabatan: 'Staf Analis', instansi: 'Kanwil Surabaya', pejabat: 'Drs. Ahmad', keperluan: 'Koordinasi Diklat', status: 'Active', checkoutTime: '-' },
+            { id: 2, datetime: '2026-09-10 09:15', nama: 'Siti Aminah', hp: '081987654321', jabatan: 'Pengawas', instansi: 'BKK ASRA', pejabat: 'Subag TU', keperluan: 'Konsultasi Berkas', status: 'Active', checkoutTime: '-' },
+            { id: 3, datetime: '2026-09-10 07:45', nama: 'Rahmat Hidayat', hp: '085234567891', jabatan: 'Kepala Seksi', instansi: 'Pemprov Jatim', pejabat: 'Head of IT', keperluan: 'Undangan Rapat', status: 'Closed', checkoutTime: '08:50' }
+        ];
+
+        let chartStatusInstance = null;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            initTime();
+            initCharts();
+            renderAll();
+            setupNavigation();
+            setupMobileSidebar();
+            setupCheckinForm();
+            setupSearch();
+        });
+
+        // 1. KONTROL SIDEBAR MOBILE (TOGGLE, BLUR BACKDROP, DAN SLIDE)
+        function setupMobileSidebar() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const sidebar = document.getElementById('sidebar');
+
+            function openSidebar() {
+                sidebar.classList.remove('-translate-x-full');
+                sidebarOverlay.classList.remove('hidden');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.add('-translate-x-full');
+                sidebarOverlay.classList.add('hidden');
+            }
+
+            hamburgerBtn.addEventListener('click', openSidebar);
+            closeSidebarBtn.addEventListener('click', closeSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Menutup sidebar otomatis setelah memilih menu (khusus HP)
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (window.innerWidth < 768) {
+                        closeSidebar();
+                    }
+                });
+            });
+        }
+
+        // 2. WAKTU REALTIME
+        function initTime() {
+            function updateClock() {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                document.getElementById('currentDatetime').textContent = 'Waktu sistem: ' + now.toLocaleDateString('id-ID', options);
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        }
+
+        // 3. NAVIGASI TAB MENU
+        function setupNavigation() {
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const pageSections = document.querySelectorAll('.page-section');
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const target = this.getAttribute('data-target');
+
+                    pageSections.forEach(sec => sec.classList.add('hidden'));
+                    document.getElementById(`section-${target}`).classList.remove('hidden');
+
+                    navBtns.forEach(b => {
+                        b.classList.remove('bg-emerald-800', 'text-amber-300', 'font-semibold');
+                        b.classList.add('text-emerald-100');
+                    });
+
+                    this.classList.add('bg-emerald-800', 'text-amber-300', 'font-semibold');
+                    this.classList.remove('text-emerald-100');
+                });
+            });
+        }
+
+        // 4. RENDER DATA KE TABEL & CARDS
+        function renderAll() {
+            renderDashboardTable();
+            renderRecentCards();
+            renderCheckoutTable();
+            renderDaftarTamuTable();
+            renderRiwayatTable();
+            renderSearchTable(guestData);
+            updateStatsAndCharts();
+        }
+
+        function renderDashboardTable() {
+            const tbody = document.getElementById('dashboardTableBody');
+            tbody.innerHTML = '';
+
+            guestData.forEach((guest, idx) => {
+                const badge = guest.status === 'Active' 
+                    ? '<span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Active</span>'
+                    : '<span class="text-[11px] bg-gray-200 text-gray-700 px-2 py-0.5 rounded font-semibold">Closed</span>';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium">${idx + 1}</td>
+                        <td class="py-3 px-4">${guest.datetime}</td>
+                        <td class="py-3 px-4 font-semibold text-gray-900">${guest.nama}</td>
+                        <td class="py-3 px-4">${guest.jabatan}</td>
+                        <td class="py-3 px-4">${guest.instansi}</td>
+                        <td class="py-3 px-4">${guest.hp}</td>
+                        <td class="py-3 px-4">${guest.pejabat}</td>
+                        <td class="py-3 px-4">${guest.keperluan}</td>
+                        <td class="py-3 px-4">${badge}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderRecentCards() {
+            const checkinList = document.getElementById('recentCheckinList');
+            const checkoutList = document.getElementById('recentCheckoutList');
+
+            const actives = guestData.filter(g => g.status === 'Active');
+            const closeds = guestData.filter(g => g.status === 'Closed');
+
+            checkinList.innerHTML = actives.slice(-2).map(g => `
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded border border-gray-100">
+                    <span class="font-medium text-gray-800 truncate">${g.instansi}</span>
+                    <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">Active</span>
+                </div>
+            `).join('') || '<p class="text-xs text-gray-400">Belum ada data</p>';
+
+            checkoutList.innerHTML = closeds.slice(-2).map(g => `
+                <div class="flex justify-between items-center bg-gray-50 p-2 rounded border border-gray-100">
+                    <span class="font-medium text-gray-800 truncate">${g.instansi}</span>
+                    <span class="text-[10px] bg-gray-200 text-gray-700 px-2 py-0.5 rounded font-semibold">Closed</span>
+                </div>
+            `).join('') || '<p class="text-xs text-gray-400">Belum ada data</p>';
+        }
+
+        function renderCheckoutTable() {
+            const tbody = document.getElementById('checkoutTableBody');
+            tbody.innerHTML = '';
+
+            const actives = guestData.filter(g => g.status === 'Active');
+            if(actives.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="py-4 text-center text-gray-500 text-xs">Tidak ada tamu aktif di dalam gedung saat ini.</td></tr>';
+                return;
+            }
+
+            actives.forEach((guest, idx) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4 font-medium">${idx + 1}</td>
+                        <td class="py-3 px-4">${guest.datetime}</td>
+                        <td class="py-3 px-4 font-semibold text-gray-900">${guest.nama}</td>
+                        <td class="py-3 px-4">${guest.instansi}</td>
+                        <td class="py-3 px-4">${guest.pejabat}</td>
+                        <td class="py-3 px-4">${guest.keperluan}</td>
+                        <td class="py-3 px-4">
+                            <button onclick="processCheckout(${guest.id})" class="bg-amber-600 hover:bg-amber-700 text-white text-[11px] font-bold px-3 py-1 rounded transition">
+                                <i class="fa-solid fa-right-from-bracket mr-1"></i> Check-out
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderDaftarTamuTable() {
+            const tbody = document.getElementById('allGuestsTableBody');
+            tbody.innerHTML = '';
+
+            guestData.forEach((guest, idx) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4">${idx + 1}</td>
+                        <td class="py-3 px-4">${guest.datetime}</td>
+                        <td class="py-3 px-4">${guest.checkoutTime}</td>
+                        <td class="py-3 px-4 font-semibold">${guest.nama}</td>
+                        <td class="py-3 px-4">${guest.instansi}</td>
+                        <td class="py-3 px-4">${guest.pejabat}</td>
+                        <td class="py-3 px-4"><span class="text-[11px] ${guest.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'} px-2 py-0.5 rounded font-bold">${guest.status}</span></td>
+                        <td class="py-3 px-4">
+                            <button onclick="deleteGuest(${guest.id})" class="text-red-600 hover:text-red-800 text-xs font-semibold">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderRiwayatTable() {
+            const tbody = document.getElementById('riwayatTableBody');
+            tbody.innerHTML = '';
+
+            const closeds = guestData.filter(g => g.status === 'Closed');
+            closeds.forEach((guest, idx) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4">${idx + 1}</td>
+                        <td class="py-3 px-4">${guest.datetime}</td>
+                        <td class="py-3 px-4">${guest.checkoutTime}</td>
+                        <td class="py-3 px-4 font-semibold">${guest.nama}</td>
+                        <td class="py-3 px-4">${guest.instansi}</td>
+                        <td class="py-3 px-4">${guest.pejabat}</td>
+                        <td class="py-3 px-4">${guest.keperluan}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderSearchTable(filteredData) {
+            const tbody = document.getElementById('searchResultsBody');
+            tbody.innerHTML = '';
+
+            filteredData.forEach((guest, idx) => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 px-4">${idx + 1}</td>
+                        <td class="py-3 px-4">${guest.datetime}</td>
+                        <td class="py-3 px-4 font-semibold">${guest.nama}</td>
+                        <td class="py-3 px-4">${guest.jabatan}</td>
+                        <td class="py-3 px-4">${guest.instansi}</td>
+                        <td class="py-3 px-4">${guest.hp}</td>
+                        <td class="py-3 px-4">${guest.pejabat}</td>
+                        <td class="py-3 px-4">${guest.keperluan}</td>
+                        <td class="py-3 px-4"><span class="text-[11px] ${guest.status === 'Active' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-700'} px-2 py-0.5 rounded font-bold">${guest.status}</span></td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 5. FORM CHECK-IN
+        function setupCheckinForm() {
+            document.getElementById('checkinForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const now = new Date();
+                const timeStr = now.toISOString().split('T')[0] + ' ' + now.toTimeString().split(' ')[0].substring(0, 5);
+
+                const newGuest = {
+                    id: Date.now(),
+                    datetime: timeStr,
+                    nama: document.getElementById('inputNama').value,
+                    hp: document.getElementById('inputHp').value,
+                    jabatan: document.getElementById('inputJabatan').value,
+                    instansi: document.getElementById('inputInstansi').value,
+                    pejabat: document.getElementById('inputPejabat').value,
+                    keperluan: document.getElementById('inputKeperluan').value,
+                    status: 'Active',
+                    checkoutTime: '-'
+                };
+
+                guestData.unshift(newGuest);
+                this.reset();
+                renderAll();
+                alert('Tamu berhasil di check-in!');
+                document.querySelector('[data-target="dashboard"]').click();
+            });
+        }
+
+        // 6. ACTION CHECK-OUT & DELETE
+        function processCheckout(id) {
+            const guest = guestData.find(g => g.id === id);
+            if(guest) {
+                const now = new Date();
+                guest.status = 'Closed';
+                guest.checkoutTime = now.toTimeString().split(' ')[0].substring(0, 5);
+                renderAll();
+                alert(`Tamu ${guest.nama} telah berhasil check-out.`);
+            }
+        }
+
+        function deleteGuest(id) {
+            if(confirm('Yakin ingin menghapus data tamu ini?')) {
+                guestData = guestData.filter(g => g.id !== id);
+                renderAll();
+            }
+        }
+
+        // 7. PENCARIAN REALTIME
+        function setupSearch() {
+            document.getElementById('searchGuestInput').addEventListener('input', function() {
+                const keyword = this.value.toLowerCase();
+                const filtered = guestData.filter(g => 
+                    g.nama.toLowerCase().includes(keyword) ||
+                    g.instansi.toLowerCase().includes(keyword) ||
+                    g.hp.includes(keyword) ||
+                    g.pejabat.toLowerCase().includes(keyword)
+                );
+                renderSearchTable(filtered);
+            });
+        }
+
+        // 8. UPDATE GRAFIK & STATISTIK
+        function updateStatsAndCharts() {
+            const total = guestData.length;
+            const activeCount = guestData.filter(g => g.status === 'Active').length;
+            const closedCount = guestData.filter(g => g.status === 'Closed').length;
+
+            document.getElementById('statTotalTamu').textContent = total;
+            document.getElementById('statActiveTamu').textContent = activeCount;
+
+            const percentage = total > 0 ? (activeCount / total) * 100 : 0;
+            document.getElementById('statProgressBar').style.width = `${percentage}%`;
+
+            if(chartStatusInstance) {
+                chartStatusInstance.data.datasets[0].data = [activeCount, 0, closedCount];
+                chartStatusInstance.update();
+            }
+        }
+
+        // 9. INIT CHART.JS
+        function initCharts() {
+            const ctxKunjungan = document.getElementById('chartKunjungan').getContext('2d');
+            const gradientEmerald = ctxKunjungan.createLinearGradient(0, 0, 0, 200);
+            gradientEmerald.addColorStop(0, 'rgba(5, 150, 105, 0.25)');
+            gradientEmerald.addColorStop(1, 'rgba(5, 150, 105, 0.0)');
+
+            new Chart(ctxKunjungan, {
+                type: 'line',
+                data: {
+                    labels: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+                    datasets: [{
+                        label: 'Jumlah Kunjungan',
+                        data: [12, 19, 15, 24, 18, 6],
+                        borderColor: '#059669',
+                        borderWidth: 3,
+                        backgroundColor: gradientEmerald,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const ctxStatus = document.getElementById('chartStatus').getContext('2d');
+            chartStatusInstance = new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Active', 'Pending', 'Closed'],
+                    datasets: [{
+                        data: [2, 0, 1],
+                        backgroundColor: ['#10b981', '#f59e0b', '#6b7280'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // 10. EKSPOR KE EXCEL
+        function exportToExcel() {
+            const exportData = guestData.map((g, index) => ({
+                'No': index + 1,
+                'Waktu Check-in': g.datetime,
+                'Waktu Check-out': g.checkoutTime,
+                'Nama Tamu': g.nama,
+                'Jabatan': g.jabatan,
+                'Instansi': g.instansi,
+                'No. HP': g.hp,
+                'Pegawai Tujuan': g.pejabat,
+                'Keperluan': g.keperluan,
+                'Status': g.status
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Daftar Tamu");
+            XLSX.writeFile(workbook, "Data_Tamu_BDK_Surabaya.xlsx");
+        }
+    </script>
+</body>
+</html>

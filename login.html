@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Login Petugas - BDK Surabaya</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        kemenag: {
+                            green: '#004d25',
+                            mid: '#136c38',
+                            mint: '#dcecdb',
+                            mintsoft: '#f3f8f3',
+                            gold: '#f5a623',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        html,
+        body,
+        button,
+        input,
+        textarea,
+        select {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body class="font-poppins bg-kemenag-mintsoft min-h-screen flex items-center justify-center p-4 antialiased">
+
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-emerald-200 overflow-hidden border-t-8 border-kemenag-green">
+        
+        <!-- HEADER LOGIN -->
+        <div class="p-6 sm:p-8 text-center space-y-3 bg-gradient-to-b from-emerald-50/50 to-transparent border-b border-slate-100">
+            <img src="assets/logo-kemenag.png" alt="Logo Kemenag" class="w-16 h-16 sm:w-20 sm:h-20 object-contain mx-auto drop-shadow-sm" onerror="this.src='https://via.placeholder.com/80'">
+            <div>
+                <h1 class="text-base sm:text-lg font-extrabold text-kemenag-green uppercase tracking-tight">KEMENTERIAN AGAMA RI</h1>
+                <p class="text-xs font-bold text-slate-800">BALAI DIKLAT KEAGAMAAN SURABAYA</p>
+            </div>
+            <p class="text-xs text-slate-500 font-medium pt-1">Portal Akses Pengelolaan Buku Tamu Digital</p>
+        </div>
+
+        <!-- FORM LOGIN -->
+        <form id="loginForm" class="p-6 sm:p-8 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Username Petugas</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </span>
+                    <input type="text" id="loginUsername" required placeholder="Masukkan username" class="w-full pl-9 pr-3 py-3 bg-kemenag-mintsoft border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-800 focus:bg-white focus:border-kemenag-green outline-none transition">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">Kata Sandi</label>
+                <!-- KOLOM PASSWORD DENGAN TOMBOL MATA -->
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                        <i class="fa-solid fa-lock text-sm"></i>
+                    </span>
+                    <input type="password" id="loginPassword" required placeholder="Masukkan kata sandi" class="w-full pl-9 pr-10 py-3 bg-kemenag-mintsoft border border-slate-300 rounded-lg text-xs sm:text-sm text-slate-800 focus:bg-white focus:border-kemenag-green outline-none transition">
+                    
+                    <!-- TOMBOL MATA (SHOW/HIDE PASSWORD) -->
+                    <button type="button" onclick="togglePassword('loginPassword', 'eyeIcon')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-kemenag-green focus:outline-none">
+                        <i id="eyeIcon" class="fa-solid fa-eye-slash text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STATUS LOGIN -->
+            <p
+                id="loginStatus"
+                class="hidden text-[11px] font-semibold"
+            ></p>
+
+            <!-- LUPA KATA SANDI -->
+            <div class="flex justify-end -mt-1">
+                <button
+                    type="button"
+                    id="forgotPasswordBtn"
+                    class="text-xs font-semibold text-kemenag-green hover:text-kemenag-mid hover:underline transition"
+                >
+                    Lupa kata sandi?
+                </button>
+            </div>
+
+            <button type="submit" class="w-full bg-kemenag-green hover:bg-[#003a1c] active:scale-[0.98] text-amber-300 font-extrabold py-3.5 rounded-lg shadow-md transition text-xs sm:text-sm flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Masuk ke Dashboard</span>
+            </button>
+
+            <div class="text-center pt-2">
+                <a href="index.html" class="text-xs text-slate-500 hover:text-kemenag-green font-semibold inline-flex items-center space-x-1 transition">
+                    <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                    <span>Kembali ke Halaman Utama</span>
+                </a>
+            </div>
+        </form>
+
+    </div>
+
+
+    <!-- MODAL RESET KATA SANDI -->
+    <div
+        id="forgotPasswordModal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/45 p-4"
+    >
+        <div class="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-emerald-200 overflow-hidden">
+
+            <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+                <div>
+                    <h2 class="text-base font-extrabold text-kemenag-green">
+                        Reset Kata Sandi
+                    </h2>
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        Masukkan email admin yang terdaftar.
+                    </p>
+                </div>
+
+                <button
+                    type="button"
+                    id="closeForgotPasswordModal"
+                    class="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition"
+                    aria-label="Tutup"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="resetPasswordForm" class="p-6 space-y-4">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">
+                        Email Admin
+                    </label>
+                    <input type="email" id="resetEmail" required placeholder="nama@contoh.com" class="w-full px-3 py-3 bg-kemenag-mintsoft border border-slate-300 rounded-lg text-xs sm:text-sm focus:bg-white focus:border-kemenag-green outline-none">
+                </div>
+
+                <p id="resetStatus" class="text-[11px] font-semibold"></p>
+
+                <button
+                    type="submit"
+                    class="w-full bg-kemenag-green hover:bg-[#003a1c] text-amber-300 font-extrabold py-3.5 rounded-lg shadow-md transition text-xs sm:text-sm"
+                >
+                    Kirim Link Reset
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        // FUNGSI TOGGLE LIHAT / TUTUP KATA SANDI
+        function togglePassword(inputId, iconId) {
+            const pwdInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(iconId);
+
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            }
+        }
+
+        // LOGIN + VALIDASI WARNA INPUT
+        function setFieldState(input, state) {
+            // Hapus semua warna status sebelumnya
+            input.classList.remove(
+                'border-red-500',
+                'bg-red-50',
+                'focus:border-red-500',
+                'border-green-500',
+                'bg-green-50',
+                'focus:border-green-500'
+            );
+
+            if (state === 'error') {
+                input.classList.add(
+                    'border-red-500',
+                    'bg-red-50',
+                    'focus:border-red-500'
+                );
+            }
+
+            if (state === 'success') {
+                input.classList.add(
+                    'border-green-500',
+                    'bg-green-50',
+                    'focus:border-green-500'
+                );
+            }
+        }
+
+        const loginUsernameInput = document.getElementById('loginUsername');
+        const loginPasswordInput = document.getElementById('loginPassword');
+        const loginStatus = document.getElementById('loginStatus');
+
+        // Saat user mengetik lagi, kembalikan warna kolom ke normal
+        [loginUsernameInput, loginPasswordInput].forEach(function(input) {
+            input.addEventListener('input', function() {
+                setFieldState(input, 'neutral');
+
+                loginStatus.classList.add('hidden');
+                loginStatus.textContent = '';
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const user = loginUsernameInput.value.trim();
+            const pass = loginPasswordInput.value;
+            try {
+                const response = await fetch('http://localhost/buku-tamu-bdk/backend/login.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+                const result = await response.json();
+                setFieldState(loginUsernameInput, result.success ? 'success' : 'error');
+                setFieldState(loginPasswordInput, result.success ? 'success' : 'error');
+
+                if (result.success) {
+                    loginStatus.textContent = 'Username dan kata sandi benar.';
+                    loginStatus.className = 'text-[11px] font-semibold text-green-600';
+                    setTimeout(function() { window.location.href = 'admin.html'; }, 500);
+                } else {
+                    loginStatus.textContent = result.message || 'Username atau kata sandi salah.';
+                    loginStatus.className = 'text-[11px] font-semibold text-red-600';
+                }
+            } catch (error) {
+                loginStatus.textContent = 'Server tidak dapat dihubungi. Pastikan Apache dan MySQL aktif.';
+                loginStatus.className = 'text-[11px] font-semibold text-red-600';
+            }
+        });
+
+        // MODAL LUPA KATA SANDI
+        const forgotBtn = document.getElementById('forgotPasswordBtn');
+        const forgotModal = document.getElementById('forgotPasswordModal');
+        const closeForgotModal = document.getElementById('closeForgotPasswordModal');
+        const resetForm = document.getElementById('resetPasswordForm');
+
+        function openForgotModal() {
+            forgotModal.classList.remove('hidden');
+            forgotModal.classList.add('flex');
+            document.getElementById('resetEmail').focus();
+        }
+
+        function closeForgotModalFn() {
+            forgotModal.classList.add('hidden');
+            forgotModal.classList.remove('flex');
+            resetForm.reset();
+        }
+
+        forgotBtn.addEventListener('click', openForgotModal);
+        closeForgotModal.addEventListener('click', closeForgotModalFn);
+
+        forgotModal.addEventListener('click', function(e) {
+            if (e.target === forgotModal) {
+                closeForgotModalFn();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !forgotModal.classList.contains('hidden')) {
+                closeForgotModalFn();
+            }
+        });
+
+        // REQUEST PASSWORD RESET LINK
+        resetForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('resetEmail').value.trim();
+            const resetStatus = document.getElementById('resetStatus');
+            const submitButton = resetForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Mengirim...';
+
+            try {
+                const response = await fetch('http://localhost/buku-tamu-bdk/backend/request-reset.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ email })
+                });
+                const result = await response.json();
+                if (!result.success) {
+                    resetStatus.textContent = result.message || 'Link reset gagal dikirim.';
+                    resetStatus.className = 'text-[11px] font-semibold text-red-600';
+                    return;
+                }
+                resetStatus.textContent = result.message || 'Jika email terdaftar, link reset sudah dikirim.';
+                resetStatus.className = 'text-[11px] font-semibold text-green-600';
+                resetForm.reset();
+            } catch (error) {
+                resetStatus.textContent = 'Server tidak dapat dihubungi. Pastikan Apache dan MySQL aktif.';
+                resetStatus.className = 'text-[11px] font-semibold text-red-600';
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Kirim Link Reset';
+            }
+        });
+    </script>
+</body>
+</html>
