@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --kemenag-emerald: #064e3b;
+    --kemenag-emerald-dark: #022c22;
+    --kemenag-amber: #f59e0b;
+    --kemenag-gold: #d97706;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Smooth Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+    background: #059669;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}
+
+/* Micro Animations & Transitions */
+.card-hover {
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px -8px rgba(6, 78, 59, 0.12);
+}
+
+/* Input Focus Ring Premium */
+input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* Custom Table Styles */
+table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+/* Keyframes Splash & Pulse */
+@keyframes softPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+.animate-logo-pulse {
+    animation: softPulse 2s ease-in-out infinite;
+}
